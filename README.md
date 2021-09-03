@@ -12,3 +12,7 @@
 - Sum of N numbers, Vector dot product.
 - Reduction and Critical Section.
 - Analysing Runtime, Speedup and Parallelization Fraction based on the hardware specifications.
+
+### Week4 [ OpenMP ]
+- Block Based Matrix Multiplication.
+- Analysing Runtime, Speedup and Parallelization Fraction based on the hardware specifications.
