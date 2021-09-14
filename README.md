@@ -23,3 +23,11 @@
     - Sequence 1 * sin a, 3 * sin b, 6 * sin c, 10 * sin d, 15 * sin a, 21 * sin b, 28 * sin c, 36 * sin d, 45 * sin a, .. Where a, b, c, d follows following sequence 0, 30, 60 and 90 respectively.
     - Sequence 8,4√2,4,2√2
 
+
+### MA_FIR [ N-order Moving Average FIR Filter Simulation ]
+- Course Project split into 5 phases
+    - Theoritical Analysis
+    - Profiling 
+    - OpenMP
+    - MPI
+    - CUDA
