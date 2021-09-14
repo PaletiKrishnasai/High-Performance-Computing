@@ -1,0 +1,20 @@
+gcc -pg sample.c -o sample
+// functional profiling
+// -pg enables functional profiling
+// gmon.out is created
+gprof sample > output.txt
+gprof -b sample
+
+----------------------------------------
+
+LINE BASED PROFILING
+
+gcov : gnome coverage
+gcc -fprofile-arcs -ftest-coverage -o example filename.c
+./example
+gcov filename.c
+//filename.c.gcov is the file where line based profiling is   stored
+
+cat filename.c.gcov |less
+
+gcov -b -a filename.c.

@@ -1,0 +1,170 @@
+        -:    0:Source:Norder_gl.cpp
+        -:    0:Graph:Norder_gl.gcno
+        -:    0:Data:Norder_gl.gcda
+        -:    0:Runs:1
+        -:    1:/*
+        -:    2:Author : Paleti Krishnasai CED18I039
+        -:    3:Simulation of N-order moving average FIR filter
+        -:    4:	N : order of the filter
+        -:    5:	n : instance  
+        -:    6:	filter equation : output_signal[n] = (input_signal[n-1] + input_signal[n] + input_signal[n1+1]) / (N+1)
+        -:    7:*/
+        -:    8:
+        -:    9:// g++ Norder_gl.cpp -O0 -fopenmp -lGL -lGLU -lglut -lGLEW -o Norder_gl
+        -:   10:
+        -:   11:
+        -:   12:#include <bits/stdc++.h>
+        -:   13:#include <stdio.h>
+        -:   14:#include <stdlib.h>
+        -:   15:#include <iostream>
+        -:   16:#include <GL/glew.h>
+        -:   17:#include <GL/freeglut.h>
+        -:   18:#include <GL/glut.h>
+        -:   19:#include <math.h>
+        -:   20:#include <time.h>
+        -:   21:#include <omp.h>
+        -:   22:
+        -:   23:using namespace std;
+        -:   24:
+        -:   25:#define N 6 // filter order
+        -:   26:#define size 200000 // size of 1-D signal
+        -:   27:
+        -:   28:long double input_signal[size], output_signal[size]; // store in heap
+        -:   29:
+function _Z14changeViewPortii called 1 returned 100% blocks executed 75%
+        1:   30:void changeViewPort(int w, int h) 
+        -:   31:{
+        1:   32:	if(w>=h)
+        1:   32-block  0
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        1:   33:		glViewport(w/2-h/2, 0, h, h);
+        1:   33-block  0
+call    0 returned 100%
+        -:   34:	else
+    #####:   35:		glViewport(0, h/2-w/2, w, w);
+    %%%%%:   35-block  0
+call    0 never executed
+        1:   36:}
+        -:   37:
+function _Z6myinitv called 1 returned 100% blocks executed 100%
+        1:   38:void myinit(void)
+        -:   39:{
+        1:   40:	glClearColor(0.8,0.8,0.8,0.0);
+        1:   40-block  0
+call    0 returned 100%
+        1:   41:	glMatrixMode(GL_PROJECTION);
+call    0 returned 100%
+        1:   42:	gluOrtho2D (0.0,200000.0,0.0,10000.0);
+call    0 returned 100%
+        1:   43:	glMatrixMode(GL_MODELVIEW);
+call    0 returned 100%
+        1:   44:}
+        -:   45:
+function _Z6filterv called 1 returned 100% blocks executed 100%
+        1:   46:void filter()
+        -:   47:{
+        1:   48:    myinit();
+        1:   48-block  0
+call    0 returned 100%
+        1:   49:    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+call    0 returned 100%
+        -:   50:    float startTime, endTime,execTime;
+        -:   51:	long double random_input;
+        -:   52:
+        -:   53:	// initialize input signal using random values
+   200001:   54:	for (int i = 0; i < size; i++)
+   200001:   54-block  0
+branch  0 taken 100% (fallthrough)
+branch  1 taken 1%
+        -:   55:	{	
+   200000:   56:		random_input = static_cast <long double> (rand());
+   200000:   56-block  0
+call    0 returned 100%
+   200000:   57:		input_signal[i] =random_input;
+        -:   58:	}
+        1:   59:	startTime = omp_get_wtime();
+        1:   59-block  0
+call    0 returned 100%
+        -:   60:	// filter equation
+        -:   61:	
+        1:   62:		output_signal[0] = (input_signal[0] + input_signal[1]) / (N+1); // edge case 1
+   199999:   63:		for (int i = 1; i < size-1; i++)
+   199999:   63-block  0
+branch  0 taken 100% (fallthrough)
+branch  1 taken 1%
+        -:   64:		{
+   199998:   65:			output_signal[i] = (input_signal[i-1] + input_signal[i] + input_signal[i+1]) / (N+1);
+   199998:   66:                glColor3f(0,0,0);
+   199998:   66-block  0
+call    0 returned 100%
+   199998:   67:                glPointSize(3);
+call    0 returned 100%
+   199998:   68:                glBegin(GL_POINTS);
+call    0 returned 100%
+   199998:   69:                glVertex2f(i,(output_signal[i])/100000);
+call    0 returned 100%
+   199998:   70:                glEnd();
+call    0 returned 100%
+   199998:   71:                glFlush();
+call    0 returned 100%
+   199998:   72:                glutSwapBuffers();
+call    0 returned 100%
+        -:   73:		}
+        1:   74:		output_signal[size - 1] = (input_signal[size - 2] + input_signal[size - 1]) / (N+1); // edge case 2
+        -:   75:
+        1:   76:    endTime = omp_get_wtime();
+        1:   76-block  0
+call    0 returned 100%
+        1:   77:	execTime = endTime - startTime;
+        1:   78:	cout << execTime << endl;
+call    0 returned 100%
+call    1 returned 100%
+        1:   79:    glutLeaveMainLoop();
+call    0 returned 100%
+        1:   80:}
+        -:   81:
+        -:   82:
+function main called 1 returned 0% blocks executed 81%
+        1:   83:int main (int argc,char** argv)
+        -:   84:{
+        1:   85:	srand (time(0));
+        1:   85-block  0
+call    0 returned 100%
+call    1 returned 100%
+        -:   86:
+        1:   87:    glutInit(&argc,argv);
+call    0 returned 100%
+        1:   88:	glutInitDisplayMode(GLUT_SINGLE);
+call    0 returned 100%
+        1:   89:	glutInitWindowSize(1000, 1000);
+call    0 returned 100%
+        1:   90:    glutInitWindowPosition(200, 200);
+call    0 returned 100%
+        -:   91:   
+        -:   92:    
+        1:   93:    glutCreateWindow("CED18I039"); 
+call    0 returned 100%
+        1:   94:    glutDisplayFunc(filter);
+call    0 returned 100%
+        -:   95:    
+        -:   96:    
+        1:   97:    glutReshapeFunc(changeViewPort);
+call    0 returned 100%
+        1:   98:    GLenum err = glewInit();
+call    0 returned 100%
+        1:   99:	if (GLEW_OK != err) {
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  100:		fprintf(stderr, "GLEW error");
+    %%%%%:  100-block  0
+call    0 never executed
+    #####:  101:		return 1;
+        -:  102:	}
+        1:  103:	glutMainLoop();
+        1:  103-block  0
+call    0 returned 0%
+        -:  104:
+        -:  105:
+    #####:  106:	return 0;
+        -:  107:}
