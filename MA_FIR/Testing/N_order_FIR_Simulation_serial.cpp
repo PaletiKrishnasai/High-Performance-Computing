@@ -3,7 +3,7 @@ Author : Paleti Krishnasai CED18I039
 Simulation of N-order moving average FIR filter
 	N : order of the filter
 	n : instance  
-	filter equation : output_signal[n] = (input_signal[n-1] + input_signal[n] + input_signal[n11]) / (N+1)
+	filter equation : output_signal[n] = (input_signal[n-1] + input_signal[n] + input_signal[n+1]) / (N+1)
 */
 
 #include <stdio.h>
